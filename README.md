@@ -1,2 +1,1 @@
 # functions.php
-# snippets
