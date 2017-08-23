@@ -74,3 +74,34 @@ function be_mobile_menu() {
 	) );	
 }
 add_action( 'doelgroep_nav_footer_responsive', 'be_mobile_menu' );
+
+
+
+// Last seen - Cookie
+//
+function wpb_lastvisit_the_title ( $title, $id ) {
+
+if ( !in_the_loop() || is_singular() || get_post_type( $id ) == 'page' ) return $title;
+
+// if no cookie then just return the title 
+
+if ( !isset($_COOKIE['lastvisit']) ||  $_COOKIE['lastvisit'] == '' ) return $title;
+$lastvisit = $_COOKIE['lastvisit'];
+$publish_date = get_post_time( 'U', true, $id );
+if ($publish_date > $lastvisit) $title .= '<span class="new-article">New</span>';
+return $title;
+ 
+}
+
+add_filter( 'cookie', 'wpb_lastvisit_the_title', 10, 2);
+ 
+// Set the lastvisit cookie 
+
+function wpb_lastvisit_set_cookie() {
+
+if ( is_admin() ) return;
+$current = current_time( 'timestamp', 1);
+setcookie( 'lastvisit', $current, time()+60+60*24*7, COOKIEPATH, COOKIE_DOMAIN );
+}
+
+add_action( 'init', 'wpb_lastvisit_set_cookie' );
