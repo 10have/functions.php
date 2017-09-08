@@ -105,3 +105,37 @@ setcookie( 'lastvisit', $current, time()+60+60*24*7, COOKIEPATH, COOKIE_DOMAIN )
 }
 
 add_action( 'init', 'wpb_lastvisit_set_cookie' );
+
+
+
+
+////////////////////////////////////////////////////////////////////////
+// Plaats m2 enkel achter de tegelprijs obv categorie
+// RtH 28-4-2017
+
+function rth_mpc_prijs( $price ) {
+
+	if ( ! class_exists( 'WC_Price_Calculator_Product' ) ) {
+		return;
+	}
+
+	global $product;
+	$measurement = WC_Price_Calculator_Product::calculator_enabled( $product );
+	
+	if ( $measurement ) {
+		
+$textafter = '<span class="m2"> /m<sup>2</sup></span> '; //tekst achter prijs
+return $price . '' . $textafter . '';
+
+	}
+
+else {
+$textafter = ''; //tekst achter prijs
+return $price . '' . $textafter . '';
+}
+
+}
+add_filter( 'woocommerce_get_price_html', 'rth_mpc_prijs');
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
