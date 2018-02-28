@@ -1,0 +1,14 @@
+// Add title before content by post
+//
+add_filter('the_content', 'add_my_content');
+
+function add_my_content($content) {
+
+$title = single_post_title();
+$my_custom_text = '<h1>' . $title . '</h1>';
+
+if(is_single() && !is_home()) {
+$content = $my_custom_text.$content;
+}
+return $content;
+}
