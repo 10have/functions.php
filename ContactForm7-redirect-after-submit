@@ -1,0 +1,20 @@
+// Since v5.0 - Contactform7 - on_sent_ok deprecated
+// Redirect after submit
+
+add_action( 'wp_footer', 'contactform7_wp_footer' );
+ 
+function contactform7_wp_footer() {
+?>
+<script type="text/javascript">
+document.addEventListener( 'wpcf7mailsent', function( event ) {
+   if ( '1803' == event.detail.contactFormId ) { // Sends sumissions on form 1803 to the first thank you page
+    location = '/bedankt/';
+    } else if ( '1592' == event.detail.contactFormId ) { // Sends submissions on form 1592 to the second thank you page
+        location = '/2/bedankt/';
+    } else { // Sends submissions on all unaccounted for forms to the third thank you page
+        location = '/contact/bedankt/';
+    }
+}, false );
+</script>
+<?php
+}
